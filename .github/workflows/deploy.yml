@@ -29,8 +29,4 @@ jobs:
     - name: Unit Test
       run: npm run test:unit
     - name: Deploy
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        publish_branch: gh-pages
+      run: npm run deploy
