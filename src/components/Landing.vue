@@ -1,6 +1,6 @@
 <template>
     <div class="landing">
-        <img src="@/assets/logo.svg" alt="Logo" class="logo" />
+        <img src="@/assets/logo.png" alt="Logo" class="logo" />
         <p class="description">Welcome to Our Service! Stream the best content anytime, anywhere.</p>
     </div>
 </template>
