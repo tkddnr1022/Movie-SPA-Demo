@@ -30,7 +30,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #141414;
+    background-color: black;
     height: 92vh;
 }
 
