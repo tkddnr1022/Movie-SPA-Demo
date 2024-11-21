@@ -38,11 +38,12 @@ export default {
     display: flex;
     justify-content: center;
     width: 100%;
-    max-width: 800px;
+    max-width: 50rem;
     background-color: #333;
     color: white;
     border-radius: 8px;
     overflow: hidden;
+    position: relative;
 }
 
 @media (max-width: 1024px) {
