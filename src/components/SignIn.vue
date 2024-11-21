@@ -1,31 +1,33 @@
 <template>
-    <div class="signin">
-        <div v-if="isLogin" class="card login">
-            <h2>Login</h2>
-            <form @submit.prevent="handleLogin">
-                <input type="email" placeholder="Email" v-model="email" required />
-                <input type="password" placeholder="Password" v-model="password" required />
-                <label class="checkbox">
-                    <input type="checkbox" v-model="rememberMe" /> Remember me
-                </label>
-                <button type="submit" class="btn">Login</button>
-            </form>
-            <a href="#" @click.prevent="forgotPassword" class="link">Forgot Password?</a>
-            <a @click.prevent="toggleMode" class="toggle">Go to Signup</a>
-        </div>
-        <div v-else class="card signup">
-            <h2>Sign Up</h2>
-            <form @submit.prevent="handleSignup">
-                <input type="email" placeholder="Email" v-model="email" required />
-                <input type="password" placeholder="Password" v-model="password" required />
-                <input type="text" placeholder="Secret Key" v-model="secretKey" required />
-                <label class="checkbox">
-                    <input type="checkbox" v-model="agreeToTerms" /> Agree to Terms and Conditions
-                </label>
-                <button type="submit" class="btn">Sign Up</button>
-            </form>
-            <a @click.prevent="toggleMode" class="toggle">Go to Login</a>
-        </div>
+    <div class="wrapper">
+        <Transition name="slide">
+            <div v-if="isLogin" class="card login">
+                <h2>Login</h2>
+                <form @submit.prevent="handleLogin">
+                    <input type="email" placeholder="Email" v-model="email" required />
+                    <input type="password" placeholder="Password" v-model="password" required />
+                    <label class="checkbox">
+                        <input type="checkbox" v-model="rememberMe" /> Remember me
+                    </label>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+                <a href="#" @click.prevent="forgotPassword" class="link">Forgot Password?</a>
+                <a @click.prevent="toggleMode" class="toggle">Go to Signup</a>
+            </div>
+            <div v-else class="card signup">
+                <h2>Sign Up</h2>
+                <form @submit.prevent="handleSignup">
+                    <input type="email" placeholder="Email" v-model="email" required />
+                    <input type="password" placeholder="Password" v-model="password" required />
+                    <input type="text" placeholder="Secret Key" v-model="secretKey" required />
+                    <label class="checkbox">
+                        <input type="checkbox" v-model="agreeToTerms" /> Agree to Terms and Conditions
+                    </label>
+                    <button type="submit" class="btn">Sign Up</button>
+                </form>
+                <a @click.prevent="toggleMode" class="toggle">Go to Login</a>
+            </div>
+        </Transition>
     </div>
 </template>
 
@@ -54,17 +56,19 @@ export default {
 </script>
 
 <style scoped>
-.signin {
+.wrapper {
     color: white;
+    display: flex;
+    justify-content: center;
 }
 
 .card {
+    position: absolute;
     background-color: #333;
     padding: 2rem;
     border-radius: 8px;
     max-width: 400px;
     margin: auto;
-    transition: all 0.3s ease;
 }
 
 h2 {
@@ -119,8 +123,19 @@ input[type="text"] {
     text-decoration: underline;
 }
 
-.toggle{
+.toggle {
     cursor: pointer;
     display: block;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+.slide-enter-from {
+  transform: translateY(100%);
+}
+.slide-leave-to {
+  transform: translateY(-100%);
 }
 </style>

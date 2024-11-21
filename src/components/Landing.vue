@@ -1,5 +1,5 @@
 <template>
-    <div class="landing">
+    <div class="wrapper">
         <img src="@/assets/logo.png" alt="Logo" class="logo" />
         <p class="description">Welcome to Our Service! Stream the best content anytime, anywhere.</p>
     </div>
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style scoped>
-.landing {
+.wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;

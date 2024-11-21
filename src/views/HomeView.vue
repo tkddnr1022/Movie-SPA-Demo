@@ -1,8 +1,8 @@
 <template>
     <div class="home-view">
         <div class="card">
-            <Landing v-show="isDesktop" />
-            <SignIn />
+            <Landing class="landing"/>
+            <SignIn class="signin"/>
         </div>
     </div>
 </template>
@@ -16,11 +16,6 @@ export default {
     components: {
         Landing,
         SignIn,
-    },
-    computed: {
-        isDesktop() {
-            return window.innerWidth >= 1024;
-        },
     },
 };
 </script>
@@ -39,6 +34,8 @@ export default {
     justify-content: center;
     width: 100%;
     max-width: 50rem;
+    height: 100%;
+    max-height: 25rem;
     background-color: #333;
     color: white;
     border-radius: 8px;
@@ -46,9 +43,24 @@ export default {
     position: relative;
 }
 
+.landing, .signin{
+    width: 50%;
+    height: 100%;
+}
+
 @media (max-width: 1024px) {
     .card {
         flex-direction: column;
+        align-items: center;
+        max-width: 25rem;
+    }
+
+    .landing{
+        display: none;
+    }
+
+    .signin{
+        width: 100%;
     }
 }
 </style>
