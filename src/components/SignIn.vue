@@ -6,9 +6,7 @@
                 <form @submit.prevent="handleSignin">
                     <input type="email" placeholder="이메일" v-model="email" required />
                     <input type="password" placeholder="비밀번호" v-model="password" required />
-                    <label class="checkbox">
-                        <input type="checkbox" v-model="rememberMe" />로그인 정보 저장
-                    </label>
+                    <Checkbox v-model="rememberMe" text="로그인 정보 기억하기" />
                     <button type="submit" class="btn">로그인</button>
                 </form>
                 <div class="toggle-wrapper">
@@ -21,10 +19,8 @@
                 <form @submit.prevent="handleSignup">
                     <input type="email" placeholder="이메일" v-model="email" required />
                     <input type="password" placeholder="비밀번호" v-model="password" required />
-                    <input type="text" placeholder="TMDB API Key" v-model="secretKey" required />
-                    <label class="checkbox">
-                        <input type="checkbox" v-model="agreeToTerms" /> 이용약관에 동의합니다.
-                    </label>
+                    <input type="text" placeholder="TMDB API Key" v-model="apiKey" required />
+                    <Checkbox v-model="agreeToTerms" text="이용 약관에 동의합니다." />
                     <button type="submit" class="btn">회원가입</button>
                 </form>
                 <div class="toggle-wrapper">
@@ -37,15 +33,20 @@
 </template>
 
 <script>
+import Checkbox from './Checkbox.vue';
+
 export default {
     name: "SignIn",
+    components: {
+        Checkbox,
+    },
     data() {
         return {
             isSignin: true,
             email: '',
             password: '',
             rememberMe: false,
-            secretKey: '',
+            apiKey: '',
             agreeToTerms: false,
         };
     },
@@ -94,16 +95,6 @@ input[type="text"] {
     border-radius: 4px;
 }
 
-.checkbox {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.checkbox input {
-    margin-right: 0.5rem;
-}
-
 .btn {
     width: 100%;
     padding: 0.8rem;
@@ -121,7 +112,7 @@ input[type="text"] {
     background-color: #f40612;
 }
 
-.toggle-wrapper{
+.toggle-wrapper {
     margin-top: 1rem;
 }
 
@@ -138,12 +129,14 @@ input[type="text"] {
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.5s ease;
+    transition: transform 0.5s ease;
 }
+
 .slide-enter-from {
-  transform: translateY(100%);
+    transform: translateY(100%);
 }
+
 .slide-leave-to {
-  transform: translateY(-100%);
+    transform: translateY(-100%);
 }
 </style>
