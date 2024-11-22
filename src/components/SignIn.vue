@@ -1,31 +1,36 @@
 <template>
     <div class="wrapper">
         <Transition name="slide">
-            <div v-if="isLogin" class="card login">
-                <h2>Login</h2>
-                <form @submit.prevent="handleLogin">
-                    <input type="email" placeholder="Email" v-model="email" required />
-                    <input type="password" placeholder="Password" v-model="password" required />
+            <div v-if="isSignin" class="card">
+                <h2>로그인</h2>
+                <form @submit.prevent="handleSignin">
+                    <input type="email" placeholder="이메일" v-model="email" required />
+                    <input type="password" placeholder="비밀번호" v-model="password" required />
                     <label class="checkbox">
-                        <input type="checkbox" v-model="rememberMe" /> Remember me
+                        <input type="checkbox" v-model="rememberMe" />로그인 정보 저장
                     </label>
-                    <button type="submit" class="btn">Login</button>
+                    <button type="submit" class="btn">로그인</button>
                 </form>
-                <a href="#" @click.prevent="forgotPassword" class="link">Forgot Password?</a>
-                <a @click.prevent="toggleMode" class="toggle">Go to Signup</a>
+                <div class="toggle-wrapper">
+                    <p class="toggle-text">계정이 없으신가요?</p>
+                    <a @click.prevent="toggleMode" class="toggle">회원가입</a>
+                </div>
             </div>
-            <div v-else class="card signup">
-                <h2>Sign Up</h2>
+            <div v-else class="card">
+                <h2>회원가입</h2>
                 <form @submit.prevent="handleSignup">
-                    <input type="email" placeholder="Email" v-model="email" required />
-                    <input type="password" placeholder="Password" v-model="password" required />
-                    <input type="text" placeholder="Secret Key" v-model="secretKey" required />
+                    <input type="email" placeholder="이메일" v-model="email" required />
+                    <input type="password" placeholder="비밀번호" v-model="password" required />
+                    <input type="text" placeholder="TMDB API Key" v-model="secretKey" required />
                     <label class="checkbox">
-                        <input type="checkbox" v-model="agreeToTerms" /> Agree to Terms and Conditions
+                        <input type="checkbox" v-model="agreeToTerms" /> 이용약관에 동의합니다.
                     </label>
-                    <button type="submit" class="btn">Sign Up</button>
+                    <button type="submit" class="btn">회원가입</button>
                 </form>
-                <a @click.prevent="toggleMode" class="toggle">Go to Login</a>
+                <div class="toggle-wrapper">
+                    <p class="toggle-text">이미 계정이 있나요?</p>
+                    <a @click.prevent="toggleMode" class="toggle">로그인</a>
+                </div>
             </div>
         </Transition>
     </div>
@@ -36,7 +41,7 @@ export default {
     name: "SignIn",
     data() {
         return {
-            isLogin: true,
+            isSignin: true,
             email: '',
             password: '',
             rememberMe: false,
@@ -46,9 +51,9 @@ export default {
     },
     methods: {
         toggleMode() {
-            this.isLogin = !this.isLogin;
+            this.isSignin = !this.isSignin;
         },
-        handleLogin() { },
+        handleSignin() { },
         handleSignup() { },
         forgotPassword() { },
     },
@@ -60,6 +65,7 @@ export default {
     color: white;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .card {
@@ -115,17 +121,19 @@ input[type="text"] {
     background-color: #f40612;
 }
 
-.link {
-    display: inline-block;
+.toggle-wrapper{
     margin-top: 1rem;
+}
+
+.toggle-text {
+    display: inline-block;
     color: #b3b3b3;
-    font-size: 0.9rem;
-    text-decoration: underline;
 }
 
 .toggle {
+    margin-left: 0.2rem;
+    display: inline-block;
     cursor: pointer;
-    display: block;
 }
 
 .slide-enter-active,
