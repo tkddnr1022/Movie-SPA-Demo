@@ -1,5 +1,5 @@
 <template>
-    <div class="checkbox-wrapper">
+    <div>
         <label class="checkbox-label">
             <input type="checkbox" class="checkbox" :checked="modelValue" @change="updateValue">
             <span class="checkmark"></span>
@@ -8,7 +8,7 @@
     </div>
 </template>
 
-<script>
+<script> // Todo: disabled 속성 추가
 export default {
     name: 'Checkbox',
     props: {
@@ -33,10 +33,6 @@ export default {
 <style scoped>
 .checkbox {
     display: none;
-}
-
-.checkbox-wrapper {
-    margin-bottom: 1rem;
 }
 
 .checkbox-label {

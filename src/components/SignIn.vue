@@ -4,10 +4,10 @@
             <div v-if="isSignin" class="card">
                 <h2>로그인</h2>
                 <form @submit.prevent="handleSignin">
-                    <input type="email" placeholder="이메일" v-model="email" required />
-                    <input type="password" placeholder="비밀번호" v-model="password" required />
-                    <Checkbox v-model="rememberMe" text="로그인 정보 기억하기" />
-                    <button type="submit" class="btn">로그인</button>
+                    <input type="email" placeholder="이메일" v-model="email" :disabled="isSubmitting" required />
+                    <input type="password" placeholder="비밀번호" v-model="password" :disabled="isSubmitting" required />
+                    <Checkbox v-model="rememberMe" :disabled="isSubmitting" text="로그인 정보 기억하기" class="checkbox-wrapper" />
+                    <button type="submit" class="btn" :disabled="isSubmitting">로그인</button>
                 </form>
                 <div class="toggle-wrapper">
                     <p class="toggle-text">계정이 없으신가요?</p>
@@ -17,14 +17,18 @@
             <div v-else class="card">
                 <h2>회원가입</h2>
                 <form @submit.prevent="handleSignup">
-                    <input type="email" placeholder="이메일" v-model="email" required />
-                    <input type="password" placeholder="비밀번호" v-model="password" required />
-                    <input type="text" placeholder="TMDB API Key" v-model="apiKey" required />
-                    <Checkbox v-model="agreeToTerms" text="이용 약관에 동의합니다." />
+                    <input type="email" placeholder="이메일" v-model="email" @input="debouncedCheckEmail"
+                        :disabled="isSubmitting" required />
+                    <label v-if="emailExists" class="check-label">
+                        이미 사용중인 이메일입니다.
+                    </label>
+                    <input type="password" placeholder="비밀번호" v-model="password" :disabled="isSubmitting" required />
+                    <input type="text" placeholder="TMDB API Key" v-model="apiKey" :disabled="isSubmitting" required />
+                    <Checkbox v-model="agreeToTerms" :disabled="isSubmitting" text="이용 약관에 동의합니다." class="checkbox-wrapper" />
                     <label v-if="!agreeToTerms && submitted" class="check-label">
                         이용 약관에 동의해주세요.
                     </label>
-                    <button type="submit" class="btn">회원가입</button>
+                    <button type="submit" class="btn" :disabled="isSubmitting || emailExists">회원가입</button>
                 </form>
                 <div class="toggle-wrapper">
                     <p class="toggle-text">이미 계정이 있나요?</p>
@@ -35,8 +39,9 @@
     </div>
 </template>
 
-<script>
+<script>// Todo: spinner, toast 추가 / tailwind 적용 고려 / 자동 로그인 / 세션 검사
 import Checkbox from './Checkbox.vue';
+import { debounce } from 'lodash-es';
 
 export default {
     name: "SignIn",
@@ -52,6 +57,8 @@ export default {
             apiKey: '',
             agreeToTerms: false,
             submitted: false,
+            isSubmitting: false,
+            emailExists: false,
         };
     },
     methods: {
@@ -59,44 +66,60 @@ export default {
             this.isSignin = !this.isSignin;
         },
         handleSignin() {
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const user = users.find(u =>
-                u.email === this.email && u.password === this.password
-            );
+            this.isSubmitting = true;
+            setTimeout(() => {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u =>
+                    u.email === this.email && u.password === this.password
+                );
 
-            if (user) {
-                localStorage.setItem('user', JSON.stringify(user));
-                this.$router.push('/');
-                console.log('success');
-            } else {
-                console.log('fail');
-            }
+                if (user) {
+                    localStorage.setItem('user', JSON.stringify(user));
+                    this.isSubmitting = false;
+                    this.$router.push('/home');
+                } else {
+                    this.isSubmitting = false;
+                    console.log('fail');
+                }
+            }, 2000);
         },
+        checkEmailAvailability() {
+            if (!this.email) {
+                this.emailExists = false;
+                return;
+            }
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const existingUser = users.find(u => u.email === this.email);
+
+            this.emailExists = existingUser ? true : false;
+        },
+        debouncedCheckEmail: null,
         handleSignup() {
             this.submitted = true;
-            if(!this.agreeToTerms){
+            if (!this.agreeToTerms || this.emailExists) {
                 return;
             }
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            this.isSubmitting = true;
 
-            const existingUser = users.find(u => u.email === this.email);
-            if (existingUser) {
-                alert('이미 존재하는 이메일입니다');
-                return;
-            }
+            setTimeout(() => {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const newUser = {
+                    email: this.email,
+                    password: this.password,
+                    apiKey: this.apiKey,
+                };
 
-            const newUser = {
-                email: this.email,
-                password: this.password
-            };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
 
-            users.push(newUser);
-            localStorage.setItem('users', JSON.stringify(users));
-            this.$router.push('/');
-            this.toggleMode();
-        },
-        forgotPassword() { },
+                this.isSubmitting = false;
+                this.$router.push('/home');
+            }, 2000);
+        }
     },
+    created() {
+        this.debouncedCheckEmail = debounce(this.checkEmailAvailability, 500);
+    }
 };
 </script>
 
@@ -119,7 +142,6 @@ export default {
 
 h2 {
     color: #e50914;
-    margin-bottom: 1rem;
 }
 
 input[type="email"],
@@ -127,11 +149,15 @@ input[type="password"],
 input[type="text"] {
     width: 100%;
     padding: 0.8rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     background-color: #222;
     border: 1px solid #444;
     color: white;
     border-radius: 4px;
+}
+
+.checkbox-wrapper {
+    margin-top: 1rem;
 }
 
 .btn {
@@ -145,10 +171,23 @@ input[type="text"] {
     cursor: pointer;
     border-radius: 4px;
     transition: background 0.2s;
+    margin-top: 1rem;
+}
+
+.btn:disabled,
+input:disabled {
+    cursor: default;
+    background-color: #444;
+    color: #b3b3b3;
 }
 
 .btn:hover {
     background-color: #f40612;
+}
+
+.btn:disabled:hover {
+  background-color: #444;
+  transform: none;
 }
 
 .toggle-wrapper {
@@ -166,7 +205,7 @@ input[type="text"] {
     cursor: pointer;
 }
 
-.check-label{
+.check-label {
     color: #e50914;
     font-size: 0.9rem;
 }
