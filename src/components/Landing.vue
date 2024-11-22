@@ -1,7 +1,8 @@
 <template>
     <div class="wrapper">
         <img src="@/assets/logo.png" alt="Logo" class="logo" />
-        <p class="description">Welcome to Our Service! Stream the best content anytime, anywhere.</p>
+        <h1>환영합니다</h1>
+        <p class="description">최신 영화에 대한 다양한 정보를 지금 찾아보세요.</p>
     </div>
 </template>
 
@@ -23,7 +24,6 @@ export default {
 
 .logo {
     width: 100px;
-    margin-bottom: 1rem;
 }
 
 .description {
