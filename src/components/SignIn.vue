@@ -21,6 +21,9 @@
                     <input type="password" placeholder="비밀번호" v-model="password" required />
                     <input type="text" placeholder="TMDB API Key" v-model="apiKey" required />
                     <Checkbox v-model="agreeToTerms" text="이용 약관에 동의합니다." />
+                    <label v-if="!agreeToTerms && submitted" class="check-label">
+                        이용 약관에 동의해주세요.
+                    </label>
                     <button type="submit" class="btn">회원가입</button>
                 </form>
                 <div class="toggle-wrapper">
@@ -48,14 +51,50 @@ export default {
             rememberMe: false,
             apiKey: '',
             agreeToTerms: false,
+            submitted: false,
         };
     },
     methods: {
         toggleMode() {
             this.isSignin = !this.isSignin;
         },
-        handleSignin() { },
-        handleSignup() { },
+        handleSignin() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u =>
+                u.email === this.email && u.password === this.password
+            );
+
+            if (user) {
+                localStorage.setItem('user', JSON.stringify(user));
+                this.$router.push('/');
+                console.log('success');
+            } else {
+                console.log('fail');
+            }
+        },
+        handleSignup() {
+            this.submitted = true;
+            if(!this.agreeToTerms){
+                return;
+            }
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+            const existingUser = users.find(u => u.email === this.email);
+            if (existingUser) {
+                alert('이미 존재하는 이메일입니다');
+                return;
+            }
+
+            const newUser = {
+                email: this.email,
+                password: this.password
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            this.$router.push('/');
+            this.toggleMode();
+        },
         forgotPassword() { },
     },
 };
@@ -125,6 +164,11 @@ input[type="text"] {
     margin-left: 0.2rem;
     display: inline-block;
     cursor: pointer;
+}
+
+.check-label{
+    color: #e50914;
+    font-size: 0.9rem;
 }
 
 .slide-enter-active,
