@@ -17,6 +17,5 @@ import Navbar from './components/Navbar.vue';
 .container {
   padding: 0rem 2rem 0rem 2rem;
   width: 100%;
-  background-color: black;
 }
 </style>

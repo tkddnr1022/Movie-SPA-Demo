@@ -17,8 +17,7 @@ export default {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background-color: #141414;
-    color: white;
+    color: #b3b3b3;
     font-size: 0.9rem;
 }
 </style>
