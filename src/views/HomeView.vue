@@ -35,7 +35,7 @@ export default {
     width: 100%;
     max-width: 50rem;
     height: 100%;
-    max-height: 25rem;
+    max-height: 26rem;
     background-color: #333;
     color: white;
     border-radius: 8px;
