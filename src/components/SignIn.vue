@@ -6,8 +6,12 @@
                 <form @submit.prevent="handleSignin">
                     <input type="email" placeholder="이메일" v-model="email" :disabled="isSubmitting" required />
                     <input type="password" placeholder="비밀번호" v-model="password" :disabled="isSubmitting" required />
-                    <Checkbox v-model="rememberMe" :disabled="isSubmitting" text="로그인 정보 기억하기" class="checkbox-wrapper" />
-                    <button type="submit" class="btn" :disabled="isSubmitting">로그인</button>
+                    <Checkbox v-model="rememberMe" :disabled="isSubmitting" text="로그인 정보 기억하기"
+                        class="checkbox-wrapper" />
+                    <button type="submit" class="btn" :disabled="isSubmitting">
+                        <span v-if="isSubmitting" class="spinner" />
+                        <span v-else>로그인</span>
+                    </button>
                 </form>
                 <div class="toggle-wrapper">
                     <p class="toggle-text">계정이 없으신가요?</p>
@@ -24,11 +28,15 @@
                     </label>
                     <input type="password" placeholder="비밀번호" v-model="password" :disabled="isSubmitting" required />
                     <input type="text" placeholder="TMDB API Key" v-model="apiKey" :disabled="isSubmitting" required />
-                    <Checkbox v-model="agreeToTerms" :disabled="isSubmitting" text="이용 약관에 동의합니다." class="checkbox-wrapper" />
+                    <Checkbox v-model="agreeToTerms" :disabled="isSubmitting" text="이용 약관에 동의합니다."
+                        class="checkbox-wrapper" />
                     <label v-if="!agreeToTerms && submitted" class="check-label">
                         이용 약관에 동의해주세요.
                     </label>
-                    <button type="submit" class="btn" :disabled="isSubmitting || emailExists">회원가입</button>
+                    <button type="submit" class="btn" :disabled="isSubmitting || emailExists">
+                        <span v-if="isSubmitting" class="spinner" />
+                        <span v-else>회원가입</span>
+                    </button>
                 </form>
                 <div class="toggle-wrapper">
                     <p class="toggle-text">이미 계정이 있나요?</p>
@@ -172,6 +180,9 @@ input[type="text"] {
     border-radius: 4px;
     transition: background 0.2s;
     margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn:disabled,
@@ -186,8 +197,8 @@ input:disabled {
 }
 
 .btn:disabled:hover {
-  background-color: #444;
-  transform: none;
+    background-color: #444;
+    transform: none;
 }
 
 .toggle-wrapper {
@@ -208,6 +219,27 @@ input:disabled {
 .check-label {
     color: #e50914;
     font-size: 0.9rem;
+}
+
+.spinner {
+    width: 1.4rem;
+    height: 1.4rem;
+    border: 4px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .slide-enter-active,
