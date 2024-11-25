@@ -1,5 +1,4 @@
 <template>
-  <!--Todo: 로그인 페이지에서 Navbar 숨김-->
   <Navbar v-if="!$route.meta.hideNavbar" />
   <div class="container">
     <RouterView />
