@@ -54,7 +54,7 @@
     </div>
 </template>
 
-<script>// Todo: spinner, toast 추가 / tailwind 적용 고려 / 자동 로그인 / 세션 검사
+<script>
 import Checkbox from './Checkbox.vue';
 import { debounce } from 'lodash-es';
 
