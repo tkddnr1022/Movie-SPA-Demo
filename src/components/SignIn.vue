@@ -4,10 +4,14 @@
             <div v-if="isSignin" class="card">
                 <h2>로그인</h2>
                 <form @submit.prevent="handleSignin">
-                    <input type="email" placeholder="이메일" v-model="email" :disabled="isSubmitting" required />
+                    <input type="email" placeholder="이메일" v-model="email" v-on:change="hideLoginFailed"
+                        :disabled="isSubmitting" required />
                     <input type="password" placeholder="비밀번호" v-model="password" :disabled="isSubmitting" required />
                     <Checkbox v-model="rememberMe" :disabled="isSubmitting" text="로그인 정보 기억하기"
                         class="checkbox-wrapper" />
+                    <label v-if="showLoginFailed" class="check-label">
+                        이메일 혹은 비밀번호가 올바르지 않습니다.
+                    </label>
                     <button type="submit" class="btn" :disabled="isSubmitting">
                         <span v-if="isSubmitting" class="spinner" />
                         <span v-else>로그인</span>
@@ -32,6 +36,9 @@
                         class="checkbox-wrapper" />
                     <label v-if="!agreeToTerms && submitted" class="check-label">
                         이용 약관에 동의해주세요.
+                    </label>
+                    <label v-if="showSignupFailed" class="check-label">
+                        회원가입에 실패하였습니다.
                     </label>
                     <button type="submit" class="btn" :disabled="isSubmitting || emailExists">
                         <span v-if="isSubmitting" class="spinner" />
@@ -67,6 +74,8 @@ export default {
             submitted: false,
             isSubmitting: false,
             emailExists: false,
+            showLoginFailed: false,
+            showSignupFailed: false,
         };
     },
     methods: {
@@ -87,7 +96,7 @@ export default {
                     this.$router.push('/home');
                 } else {
                     this.isSubmitting = false;
-                    console.log('fail');
+                    this.showLoginFailed = true;
                 }
             }, 2000);
         },
@@ -108,8 +117,8 @@ export default {
                 return;
             }
             this.isSubmitting = true;
-
-            setTimeout(() => {
+            try{
+                setTimeout(() => { // for dev
                 const users = JSON.parse(localStorage.getItem('users') || '[]');
                 const newUser = {
                     email: this.email,
@@ -123,7 +132,18 @@ export default {
                 this.isSubmitting = false;
                 this.$router.push('/home');
             }, 2000);
-        }
+            }
+            catch(error){
+                console.error(error);
+                this.showSignupFailed = true;
+            }
+        },
+        hideLoginFailed() {
+            this.showLoginFailed = false;
+        },
+        hideSignupFailed() {
+            this.showSignupFailed = false;
+        },
     },
     created() {
         this.debouncedCheckEmail = debounce(this.checkEmailAvailability, 500);
