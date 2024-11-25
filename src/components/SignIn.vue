@@ -103,7 +103,7 @@ export default {
                         type: 'success',
                         position: 'top',
                     });
-                    this.$router.push('/home');
+                    this.$router.push('/');
                 } else {
                     this.isSubmitting = false;
                     this.showLoginFailed = true;
@@ -145,7 +145,7 @@ export default {
                         type: 'success',
                         position: 'top',
                     });
-                    this.$router.push('/home');
+                    this.$router.push('/');
                 }, 2000);
             }
             catch (error) {
