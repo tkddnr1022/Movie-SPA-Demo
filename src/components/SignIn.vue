@@ -57,6 +57,7 @@
 <script>
 import Checkbox from './Checkbox.vue';
 import { debounce } from 'lodash-es';
+import CryptoJS from 'crypto-js';
 
 export default {
     name: "SignIn",
@@ -87,7 +88,7 @@ export default {
             setTimeout(() => {
                 const users = JSON.parse(localStorage.getItem('users') || '[]');
                 const user = users.find(u =>
-                    u.email === this.email && u.password === this.password
+                    u.email === this.email && u.password === CryptoJS.SHA256(this.password).toString()
                 );
 
                 if (user) {
@@ -132,7 +133,7 @@ export default {
                     const users = JSON.parse(localStorage.getItem('users') || '[]');
                     const newUser = {
                         email: this.email,
-                        password: this.password,
+                        password: CryptoJS.SHA256(this.password).toString(),
                         apiKey: this.apiKey,
                     };
                     users.push(newUser);
