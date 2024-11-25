@@ -93,6 +93,11 @@ export default {
                 if (user) {
                     localStorage.setItem('user', JSON.stringify(user));
                     this.isSubmitting = false;
+                    this.$toast.open({
+                        message: '로그인 성공!',
+                        type: 'success',
+                        position: 'top',
+                    });
                     this.$router.push('/home');
                 } else {
                     this.isSubmitting = false;
@@ -117,23 +122,28 @@ export default {
                 return;
             }
             this.isSubmitting = true;
-            try{
+            try {
                 setTimeout(() => { // for dev
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                const newUser = {
-                    email: this.email,
-                    password: this.password,
-                    apiKey: this.apiKey,
-                };
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const newUser = {
+                        email: this.email,
+                        password: this.password,
+                        apiKey: this.apiKey,
+                    };
 
-                users.push(newUser);
-                localStorage.setItem('users', JSON.stringify(users));
+                    users.push(newUser);
+                    localStorage.setItem('users', JSON.stringify(users));
 
-                this.isSubmitting = false;
-                this.$router.push('/home');
-            }, 2000);
+                    this.isSubmitting = false;
+                    this.$toast.open({
+                        message: '회원가입 성공!',
+                        type: 'success',
+                        position: 'top',
+                    });
+                    this.$router.push('/home');
+                }, 2000);
             }
-            catch(error){
+            catch (error) {
                 console.error(error);
                 this.showSignupFailed = true;
             }
