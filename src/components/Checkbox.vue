@@ -62,10 +62,10 @@ export default {
     content: "";
     position: absolute;
     display: none;
-    left: 8px;
-    top: 4px;
-    width: 5px;
-    height: 10px;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 11px;
     border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
