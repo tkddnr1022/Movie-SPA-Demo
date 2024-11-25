@@ -13,7 +13,8 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'signin',
-      component: () => import('../views/SignInView.vue')
+      component: () => import('../views/SignInView.vue'),
+      meta: { hideNavbar: true },
     }
   ]
 })
