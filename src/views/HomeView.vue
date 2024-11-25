@@ -1,8 +1,8 @@
 <template>
     <div class="home-view">
         <div class="card">
-            <Landing class="landing"/>
-            <SignIn class="signin"/>
+            <Landing class="landing" />
+            <SignIn class="signin" />
         </div>
     </div>
 </template>
@@ -40,11 +40,25 @@ export default {
     border-radius: 8px;
     overflow: hidden;
     position: relative;
+    animation: fadein 0.5s ease;
 }
 
-.landing, .signin{
+.landing,
+.signin {
     width: 50%;
     height: 100%;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+        transform: translateY(-10%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
 }
 
 @media (max-width: 1024px) {
@@ -54,11 +68,11 @@ export default {
         max-width: 25rem;
     }
 
-    .landing{
+    .landing {
         display: none;
     }
 
-    .signin{
+    .signin {
         width: 100%;
     }
 }
