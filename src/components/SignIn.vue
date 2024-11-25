@@ -68,7 +68,7 @@ export default {
             isSignin: true,
             email: '',
             password: '',
-            rememberMe: false,
+            rememberMe: true,
             apiKey: '',
             agreeToTerms: false,
             submitted: false,
@@ -91,7 +91,12 @@ export default {
                 );
 
                 if (user) {
-                    localStorage.setItem('user', JSON.stringify(user));
+                    if (this.rememberMe) {
+                        localStorage.setItem('user', JSON.stringify(user));
+                    }
+                    else {
+                        sessionStorage.setItem('user', JSON.stringify(user));
+                    }
                     this.isSubmitting = false;
                     this.$toast.open({
                         message: '로그인 성공!',
@@ -130,10 +135,10 @@ export default {
                         password: this.password,
                         apiKey: this.apiKey,
                     };
-
                     users.push(newUser);
                     localStorage.setItem('users', JSON.stringify(users));
 
+                    localStorage.setItem('user', JSON.stringify(newUser));
                     this.isSubmitting = false;
                     this.$toast.open({
                         message: '회원가입 성공!',
