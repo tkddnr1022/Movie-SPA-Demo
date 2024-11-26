@@ -13,8 +13,26 @@ import Navbar from './components/Navbar.vue';
 </script>
 
 <style scoped>
-.container {
-  padding: 0rem 2rem 0rem 2rem;
+.container{
   width: 100%;
+  padding: 0rem 10rem 0rem 10rem;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0rem 5rem 0rem 5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0rem 2.5rem 0rem 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0rem 1.5rem 0rem 1.5rem;
+  }
 }
 </style>
