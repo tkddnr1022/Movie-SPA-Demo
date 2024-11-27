@@ -2,11 +2,9 @@
     <header>
         <nav class="navbar">
             <div class="menu-toggle" @click="toggleMobileMenu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+                <MenuIcon class="icon" />
             </div>
-            <div class="logo">Movie-SPA-Demo</div>
+            <div class="logo" @click="goToHome">Movie-SPA-Demo</div>
             <transition name="fade">
                 <ul v-if="isMobileMenuOpen" class="nav-links mobile-menu">
                     <li @click="closeMobileMenu">
@@ -41,6 +39,11 @@
     </header>
 </template>
 
+<script setup>
+import router from '@/router';
+import { MenuIcon } from '@heroicons/vue/solid';
+</script>
+
 <script>
 import { RouterLink } from 'vue-router';
 
@@ -60,7 +63,10 @@ export default {
         },
         closeMobileMenu() {
             this.isMobileMenuOpen = false;
-        }
+        },
+        goToHome() {
+            router.push('/');
+        },
     }
 };
 </script>
@@ -142,6 +148,25 @@ header {
 @media screen and (max-width: 768px) {
     .menu-toggle {
         display: flex;
+        position: absolute;
+    }
+
+    .icon {
+        color: #b8b8b8;
+        width: 2rem;
+        transition: color 0.2s;
+    }
+
+    .icon:active {
+        color: #fff;
+    }
+    
+    .logo:hover {
+        pointer-events: none;
+    }
+
+    .logo:active {
+        color: #c5030d;
     }
 
     .nav-links {
