@@ -6,6 +6,7 @@ a {
   padding: 3px;
 }
 
-#app{
+body{
   background-color: #000;
+  color: #fff;
 }
