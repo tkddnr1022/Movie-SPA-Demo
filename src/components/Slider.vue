@@ -2,7 +2,8 @@
   <div class="multi-div-slider">
     <div class="slider-container">
       <div class="div-wrapper" :style="{ transform: `translateX(-${currentOffset}%)` }">
-        <div v-for="(item, index) in items" :key="index" class="div-item">
+        <div v-for="(item, index) in items" :key="index" class="div-item"
+          :style="{ flex: `0 0 ${100 / itemsPerSlide}%` }">
           <slot :item="item" :index="index">
             <div class="default-slot">
               {{ item }}
@@ -109,8 +110,6 @@ export default defineComponent({
 }
 
 .div-item {
-  flex: 0 0 20%;
-  /* 5 items per slide */
   box-sizing: border-box;
   cursor: pointer;
   transition: transform 0.2s ease;

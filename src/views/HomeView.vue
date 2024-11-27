@@ -6,7 +6,8 @@
                 <LightningBoltIcon class="icon" />
                 <h2>현재 상영중</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.nowPlaying" :items="movies.nowPlaying" :itemsPerSlide="5">
+            <Slider class="slider-wrapper" v-if="movies.nowPlaying" :items="movies.nowPlaying"
+                :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
                     <MovieItem :movie="item" @click="openMovieDialog(item)" />
                 </template>
@@ -17,9 +18,9 @@
                 <FireIcon class="icon" />
                 <h2>최고 인기</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.popular" :items="movies.popular" :itemsPerSlide="5">
+            <Slider class="slider-wrapper" v-if="movies.popular" :items="movies.popular" :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item" @click="openMovieDialog(item)"/>
+                    <MovieItem :movie="item" @click="openMovieDialog(item)" />
                 </template>
             </Slider>
         </div>
@@ -28,9 +29,10 @@
                 <StarIcon class="icon" />
                 <h2>최고 평점</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.topRated" :items="movies.topRated" :itemsPerSlide="5">
+            <Slider class="slider-wrapper" v-if="movies.topRated" :items="movies.topRated"
+                :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item" @click="openMovieDialog(item)"/>
+                    <MovieItem :movie="item" @click="openMovieDialog(item)" />
                 </template>
             </Slider>
         </div>
@@ -39,9 +41,10 @@
                 <ClockIcon class="icon" />
                 <h2>개봉 예정</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.upcoming" :items="movies.upcoming" :itemsPerSlide="5">
+            <Slider class="slider-wrapper" v-if="movies.upcoming" :items="movies.upcoming"
+                :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item" @click="openMovieDialog(item)"/>
+                    <MovieItem :movie="item" @click="openMovieDialog(item)" />
                 </template>
             </Slider>
         </div>
@@ -81,10 +84,23 @@ export default {
                 topRated: TestMovies as Movie[],
                 upcoming: TestMovies as Movie[],
             },
+            windowWidth: window.innerWidth,
+        }
+    },
+    computed: {
+        itemsPerSlide() {
+            if (this.windowWidth > 1200) {
+                return 5;
+            } else if (this.windowWidth > 768) {
+                return 4;
+            } else {
+                return 3;
+            }
         }
     },
     mounted() {
         //this.fetchData()
+        window.addEventListener("resize", this.handleResize);
     },
     methods: {
         async fetchData() {
@@ -104,8 +120,14 @@ export default {
             if (upcoming) {
                 this.movies.upcoming = upcoming.results;
             }
-        }
-    }
+        },
+        handleResize() {
+            this.windowWidth = window.innerWidth;
+        },
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.handleResize);
+    },
 };
 </script>
 
