@@ -15,7 +15,7 @@
                     </div>
                     <p class="movie-overview">{{ movie.overview }}</p>
                     <div class="movie-actions">
-                        <button @click="goToDetail">찜하기</button>
+                        <button @click="addToWish">찜하기</button>
                     </div>
                 </div>
             </div>
@@ -55,10 +55,9 @@ const closeDialog = () => {
     emit('close')
 }
 
-const goToDetail = () => {
+const addToWish = () => {
     if (props.movie) {
-        router.push(`/movie/${props.movie.id}`)
-        closeDialog()
+        
     }
 }
 </script>
