@@ -9,13 +9,25 @@
                 <div class="movie-info">
                     <h2>{{ movie.title }}</h2>
                     <div class="movie-metadata">
-                        <span>{{ movie.release_date }}</span>
-                        <span>{{ movie.original_language.toUpperCase() }}</span>
-                        <span>★ {{ movie.vote_average.toFixed(1) }}</span>
+                        <div class="movie-metadata-wrapper">
+                            <CalendarIcon class="icon" />
+                            <span>{{ movie.release_date }}</span>
+                        </div>
+                        <div class="movie-metadata-wrapper">
+                            <TranslateIcon class="icon" />
+                            {{ movie.original_language.toUpperCase() }}
+                        </div>
+                        <div class="movie-metadata-wrapper">
+                            <StarIcon class="icon" />
+                            {{ movie.vote_average.toFixed(1) }}
+                        </div>
                     </div>
                     <p class="movie-overview">{{ movie.overview }}</p>
                     <div class="movie-actions">
-                        <button @click="addToWish">찜하기</button>
+                        <button @click="addToWish">
+                            <HeartIcon class="icon" />
+                            <span class="button-text">찜하기</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -27,6 +39,7 @@
 import { APIBaseURLs } from '@/scripts/enums/api-base-urls';
 import { ref, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
+import { CalendarIcon, HeartIcon, StarIcon, TranslateIcon } from '@heroicons/vue/solid';
 
 const backdropUrlPrefix = APIBaseURLs.Backdrop;
 const props = defineProps({
@@ -57,7 +70,7 @@ const closeDialog = () => {
 
 const addToWish = () => {
     if (props.movie) {
-        
+
     }
 }
 </script>
@@ -174,6 +187,10 @@ export default {
     color: #666;
 }
 
+.movie-metadata-wrapper {
+    display: flex;
+}
+
 .movie-overview {
     margin-bottom: 20px;
     line-height: 1.6;
@@ -202,6 +219,15 @@ export default {
 
 .movie-actions button:hover {
     background-color: #f40612;
+}
+
+.icon {
+    width: 1.2rem;
+    margin-right: 2px;
+}
+
+.button-text {
+    line-height: 1.2rem;
 }
 
 @keyframes fade-in {

@@ -2,7 +2,10 @@
     <div class="home-view">
         <MovieDialog :movie="selectedMovie" @close="selectedMovie = null" />
         <div class="slider-container">
-            <h2>현재 상영중</h2>
+            <div class="slider-header">
+                <LightningBoltIcon class="icon" />
+                <h2>현재 상영중</h2>
+            </div>
             <Slider class="slider-wrapper" v-if="movies.nowPlaying" :items="movies.nowPlaying" :itemsPerSlide="5">
                 <template v-slot="{ item }">
                     <MovieItem :movie="item" @click="openMovieDialog(item)" />
@@ -10,26 +13,35 @@
             </Slider>
         </div>
         <div class="slider-container">
-            <h2>최고 인기</h2>
+            <div class="slider-header">
+                <FireIcon class="icon" />
+                <h2>최고 인기</h2>
+            </div>
             <Slider class="slider-wrapper" v-if="movies.popular" :items="movies.popular" :itemsPerSlide="5">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item" />
+                    <MovieItem :movie="item" @click="openMovieDialog(item)"/>
                 </template>
             </Slider>
         </div>
         <div class="slider-container">
-            <h2>최고 평점</h2>
+            <div class="slider-header">
+                <StarIcon class="icon" />
+                <h2>최고 평점</h2>
+            </div>
             <Slider class="slider-wrapper" v-if="movies.topRated" :items="movies.topRated" :itemsPerSlide="5">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item" />
+                    <MovieItem :movie="item" @click="openMovieDialog(item)"/>
                 </template>
             </Slider>
         </div>
         <div class="slider-container">
-            <h2>개봉 예정</h2>
+            <div class="slider-header">
+                <ClockIcon class="icon" />
+                <h2>개봉 예정</h2>
+            </div>
             <Slider class="slider-wrapper" v-if="movies.upcoming" :items="movies.upcoming" :itemsPerSlide="5">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item" />
+                    <MovieItem :movie="item" @click="openMovieDialog(item)"/>
                 </template>
             </Slider>
         </div>
@@ -52,6 +64,7 @@ import { TestMovies } from '@/test/test-movies';
 import MovieItem from '@/components/MovieItem.vue';
 import { ref } from 'vue';
 import MovieDialog from '@/components/MovieDialog.vue';
+import { ClockIcon, FireIcon, LightningBoltIcon, StarIcon } from '@heroicons/vue/solid';
 
 export default {
     name: "HomeView",
@@ -113,6 +126,15 @@ export default {
 .slider-wrapper {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+}
+
+.slider-header {
+    display: flex;
+}
+
+.icon {
+    width: 1.4rem;
+    margin-right: 0.3rem;
 }
 
 @keyframes fadein {
