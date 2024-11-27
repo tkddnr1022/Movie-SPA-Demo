@@ -1,6 +1,6 @@
 <template>
     <header>
-        <nav class="navbar">
+        <nav :class="['navbar', { scrolled: isScrolled }]">
             <div class="menu-toggle" @click="toggleMobileMenu">
                 <MenuIcon class="menu-icon" />
             </div>
@@ -61,18 +61,14 @@ import { MenuIcon, UserCircleIcon } from '@heroicons/vue/solid';
 </script>
 
 <script>
-import { RouterLink } from 'vue-router';
-
 export default {
     name: "Navbar",
-    components: {
-        RouterLink,
-    },
     data() {
         return {
             isMobileMenuOpen: false,
             isMobileProfileOpen: false,
             userEmail: '',
+            isScrolled: false,
         };
     },
     methods: {
@@ -96,13 +92,21 @@ export default {
             if (user) {
                 this.userEmail = user.email;
             }
-        }
+        },
+        handleScroll() {
+            this.isScrolled = window.scrollY > 0;
+        },
     },
     mounted() {
         this.fetchUserEmail();
-    }
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
 };
 </script>
+
 
 <style scoped>
 header {
@@ -117,11 +121,16 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 1.2rem;
     color: white;
     font-size: 1rem;
     font-weight: bold;
     position: relative;
+    transition: padding 0.3s ease;
+}
+
+.navbar.scrolled {
+    padding: 0.4rem;
 }
 
 .logo {
