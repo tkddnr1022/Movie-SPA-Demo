@@ -1,17 +1,118 @@
 <template>
     <div class="home-view">
-        home
+        <div class="slider-container">
+            <h2>현재 상영중</h2>
+            <Slider class="slider-wrapper" v-if="movies.nowPlaying" :items="movies.nowPlaying" :itemsPerSlide="5">
+                <template v-slot="{ item }">
+                    <MovieItem :movie="item"/>
+                </template>
+            </Slider>
+        </div>
+        <div class="slider-container">
+            <h2>최고 인기</h2>
+            <Slider class="slider-wrapper" v-if="movies.popular" :items="movies.popular" :itemsPerSlide="5">
+                <template v-slot="{ item }">
+                    <MovieItem :movie="item"/>
+                </template>
+            </Slider>
+        </div>
+        <div class="slider-container">
+            <h2>최고 평점</h2>
+            <Slider class="slider-wrapper" v-if="movies.topRated" :items="movies.topRated" :itemsPerSlide="5">
+                <template v-slot="{ item }">
+                    <MovieItem :movie="item"/>
+                </template>
+            </Slider>
+        </div>
+        <div class="slider-container">
+            <h2>개봉 예정</h2>
+            <Slider class="slider-wrapper" v-if="movies.upcoming" :items="movies.upcoming" :itemsPerSlide="5">
+                <template v-slot="{ item }">
+                    <MovieItem :movie="item"/>
+                </template>
+            </Slider>
+        </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import { getMovieList } from '@/scripts/api/get-movie-list';
+import Slider from '@/components/Slider.vue';
+import type { Movie } from '@/scripts/interfaces/movie';
+import { MovieListQuery } from '@/scripts/enums/movie-list-query';
+import { TestMovies } from '@/test/test-movies';
+import MovieItem from '@/components/Movie.vue';
 
 export default {
     name: "HomeView",
     components: {
+        Slider,
+        MovieItem,
     },
+    data() {
+        return {
+            movies: {
+                nowPlaying: TestMovies as Movie[],
+                popular: TestMovies as Movie[],
+                topRated: TestMovies as Movie[],
+                upcoming: TestMovies as Movie[],
+            },
+        }
+    },
+    mounted() {
+        //this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+            const nowPlaying = await getMovieList(MovieListQuery.NowPlaying);
+            if (nowPlaying) {
+                this.movies.nowPlaying = nowPlaying.results;
+            }
+            const popular = await getMovieList(MovieListQuery.Popular);
+            if (popular) {
+                this.movies.popular = popular.results;
+            }
+            const topRated = await getMovieList(MovieListQuery.TopRated);
+            if (topRated) {
+                this.movies.topRated = topRated.results;
+            }
+            const upcoming = await getMovieList(MovieListQuery.Upcoming);
+            if (upcoming) {
+                this.movies.upcoming = upcoming.results;
+            }
+        }
+    }
 };
 </script>
 
 <style scoped>
+.home-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    animation: fadein 0.5s ease;
+}
+
+.slider-container {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.slider-wrapper{
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+        transform: translateY(-5%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
 </style>
