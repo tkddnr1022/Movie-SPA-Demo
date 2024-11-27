@@ -1,10 +1,11 @@
 <template>
     <div class="home-view">
+        <MovieDialog :movie="selectedMovie" @close="selectedMovie = null" />
         <div class="slider-container">
             <h2>현재 상영중</h2>
             <Slider class="slider-wrapper" v-if="movies.nowPlaying" :items="movies.nowPlaying" :itemsPerSlide="5">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item"/>
+                    <MovieItem :movie="item" @click="openMovieDialog(item)" />
                 </template>
             </Slider>
         </div>
@@ -12,7 +13,7 @@
             <h2>최고 인기</h2>
             <Slider class="slider-wrapper" v-if="movies.popular" :items="movies.popular" :itemsPerSlide="5">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item"/>
+                    <MovieItem :movie="item" />
                 </template>
             </Slider>
         </div>
@@ -20,7 +21,7 @@
             <h2>최고 평점</h2>
             <Slider class="slider-wrapper" v-if="movies.topRated" :items="movies.topRated" :itemsPerSlide="5">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item"/>
+                    <MovieItem :movie="item" />
                 </template>
             </Slider>
         </div>
@@ -28,12 +29,19 @@
             <h2>개봉 예정</h2>
             <Slider class="slider-wrapper" v-if="movies.upcoming" :items="movies.upcoming" :itemsPerSlide="5">
                 <template v-slot="{ item }">
-                    <MovieItem :movie="item"/>
+                    <MovieItem :movie="item" />
                 </template>
             </Slider>
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+const selectedMovie = ref()
+const openMovieDialog = (movie: Movie) => {
+    selectedMovie.value = movie
+}
+</script>
 
 <script lang="ts">
 import { getMovieList } from '@/scripts/api/get-movie-list';
@@ -41,13 +49,16 @@ import Slider from '@/components/Slider.vue';
 import type { Movie } from '@/scripts/interfaces/movie';
 import { MovieListQuery } from '@/scripts/enums/movie-list-query';
 import { TestMovies } from '@/test/test-movies';
-import MovieItem from '@/components/Movie.vue';
+import MovieItem from '@/components/MovieItem.vue';
+import { ref } from 'vue';
+import MovieDialog from '@/components/MovieDialog.vue';
 
 export default {
     name: "HomeView",
     components: {
         Slider,
         MovieItem,
+        MovieDialog,
     },
     data() {
         return {
@@ -99,7 +110,7 @@ export default {
     margin-bottom: 1rem;
 }
 
-.slider-wrapper{
+.slider-wrapper {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
