@@ -18,7 +18,7 @@ import Navbar from './components/Navbar.vue';
   padding: 0rem 10rem 0rem 10rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .container {
     padding: 0rem 5rem 0rem 5rem;
   }
@@ -32,7 +32,7 @@ import Navbar from './components/Navbar.vue';
 
 @media (max-width: 480px) {
   .container {
-    padding: 0rem 1.5rem 0rem 1.5rem;
+    padding: 0rem 1.2rem 0rem 1.2rem;
   }
 }
 </style>
