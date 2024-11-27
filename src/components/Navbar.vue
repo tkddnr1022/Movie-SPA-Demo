@@ -4,13 +4,16 @@
             <div class="logo">Movie-SPA-Demo</div>
             <ul class="nav-links">
                 <li>
-                    <RouterLink to="/">Home</RouterLink>
+                    <RouterLink to="/">홈</RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/features">Features</RouterLink>
+                    <RouterLink to="/popular">인기</RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/contact">Contact</RouterLink>
+                    <RouterLink to="/search">검색</RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/wishlist">찜 목록</RouterLink>
                 </li>
             </ul>
         </nav>
@@ -41,7 +44,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 3rem;
+    padding: 1rem 1rem;
     color: white;
     font-size: 1rem;
     font-weight: bold;
