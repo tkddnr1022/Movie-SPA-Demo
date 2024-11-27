@@ -63,7 +63,6 @@ import { getMovieList } from '@/scripts/api/get-movie-list';
 import Slider from '@/components/Slider.vue';
 import type { Movie } from '@/scripts/interfaces/movie';
 import { MovieListQuery } from '@/scripts/enums/movie-list-query';
-import { TestMovies } from '@/test/test-movies';
 import MovieItem from '@/components/MovieItem.vue';
 import { ref } from 'vue';
 import MovieDialog from '@/components/MovieDialog.vue';
@@ -79,10 +78,10 @@ export default {
     data() {
         return {
             movies: {
-                nowPlaying: TestMovies as Movie[],
-                popular: TestMovies as Movie[],
-                topRated: TestMovies as Movie[],
-                upcoming: TestMovies as Movie[],
+                nowPlaying: [] as Movie[],
+                popular: [] as Movie[],
+                topRated: [] as Movie[],
+                upcoming: [] as Movie[],
             },
             windowWidth: window.innerWidth,
         }
@@ -99,7 +98,7 @@ export default {
         }
     },
     mounted() {
-        //this.fetchData()
+        this.fetchData()
         window.addEventListener("resize", this.handleResize);
     },
     methods: {

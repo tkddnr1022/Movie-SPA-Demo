@@ -1,4 +1,7 @@
+import type { CachedData } from "../interfaces/cache";
 import type User from "../interfaces/user";
+
+const CACHE_EXPIRES_IN = import.meta.env.VITE_CACHE_EXPIRES_IN;
 
 export function getApiKey() {
     const session = sessionStorage.getItem('user');
@@ -6,6 +9,26 @@ export function getApiKey() {
         const user: User = JSON.parse(session);
         return user.apiKey;
     }
+}
+
+export function getCachedData(name: string) {
+    const dataStr = localStorage.getItem(name);
+    if (dataStr) {
+        const cache: CachedData = JSON.parse(dataStr);
+        if (cache.expiresIn < Date.now()) {
+            localStorage.removeItem(name);
+            return;
+        }
+        return cache;
+    }
+}
+
+export function setCachedData(name: string, data: Object) {
+    const cache: CachedData = {
+        data: data,
+        expiresIn: Date.now() + Number(CACHE_EXPIRES_IN),
+    }
+    localStorage.setItem(name, JSON.stringify(cache));
 }
 
 export function getSession() {
