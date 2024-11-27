@@ -3,7 +3,7 @@
         <dialog ref="dialogRef" class="movie-detail-dialog" @click.self="closeDialog">
             <div class="dialog-content">
                 <button @click="closeDialog" class="close-button">&times;</button>
-                <div class="movie-poster">
+                <div class="movie-backdrop">
                     <img :src="backdropUrlPrefix + movie.backdrop_path" :alt="movie.title">
                 </div>
                 <div class="movie-info">
@@ -153,11 +153,11 @@ export default {
     color: #ccc
 }
 
-.movie-poster {
+.movie-backdrop {
     flex: 1;
 }
 
-.movie-poster img {
+.movie-backdrop img {
     width: 100%;
     height: auto;
     object-fit: cover;
