@@ -88,6 +88,12 @@ header {
 .logo {
     font-size: 1.5rem;
     color: #e50914;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.logo:hover {
+    color: #c5030d;
 }
 
 .nav-links {
