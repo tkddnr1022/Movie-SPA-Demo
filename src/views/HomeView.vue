@@ -1,12 +1,12 @@
 <template>
-    <div class="home-view">
+    <div class="home-view" v-if="loaded">
         <MovieDialog :movie="selectedMovie" @close="selectedMovie = null" />
         <div class="slider-container">
             <div class="slider-header">
                 <LightningBoltIcon class="icon" />
                 <h2>현재 상영중</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.nowPlaying" :items="movies.nowPlaying"
+            <Slider class="slider-wrapper" :items="movies.nowPlaying"
                 :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
                     <MovieItem :movie="item" @click="openMovieDialog(item)" />
@@ -18,7 +18,8 @@
                 <FireIcon class="icon" />
                 <h2>최고 인기</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.popular" :items="movies.popular" :itemsPerSlide="itemsPerSlide">
+            <Slider class="slider-wrapper" :items="movies.popular"
+                :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
                     <MovieItem :movie="item" @click="openMovieDialog(item)" />
                 </template>
@@ -29,7 +30,7 @@
                 <StarIcon class="icon" />
                 <h2>최고 평점</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.topRated" :items="movies.topRated"
+            <Slider class="slider-wrapper" :items="movies.topRated"
                 :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
                     <MovieItem :movie="item" @click="openMovieDialog(item)" />
@@ -41,13 +42,16 @@
                 <ClockIcon class="icon" />
                 <h2>개봉 예정</h2>
             </div>
-            <Slider class="slider-wrapper" v-if="movies.upcoming" :items="movies.upcoming"
+            <Slider class="slider-wrapper" :items="movies.upcoming"
                 :itemsPerSlide="itemsPerSlide">
                 <template v-slot="{ item }">
                     <MovieItem :movie="item" @click="openMovieDialog(item)" />
                 </template>
             </Slider>
         </div>
+    </div>
+    <div v-else class="spinner-wrapper">
+        <span class="spinner" />
     </div>
 </template>
 
@@ -84,6 +88,7 @@ export default {
                 upcoming: [] as Movie[],
             },
             windowWidth: window.innerWidth,
+            loaded: false,
         }
     },
     computed: {
@@ -103,22 +108,27 @@ export default {
     },
     methods: {
         async fetchData() {
-            const nowPlaying = await getMovieList(MovieListQuery.NowPlaying);
+            const [nowPlaying, popular, topRated, upcoming] = await Promise.all([
+                getMovieList(MovieListQuery.NowPlaying),
+                getMovieList(MovieListQuery.Popular),
+                getMovieList(MovieListQuery.TopRated),
+                getMovieList(MovieListQuery.Upcoming),
+            ]);
+
             if (nowPlaying) {
                 this.movies.nowPlaying = nowPlaying.results;
             }
-            const popular = await getMovieList(MovieListQuery.Popular);
             if (popular) {
                 this.movies.popular = popular.results;
             }
-            const topRated = await getMovieList(MovieListQuery.TopRated);
             if (topRated) {
                 this.movies.topRated = topRated.results;
             }
-            const upcoming = await getMovieList(MovieListQuery.Upcoming);
             if (upcoming) {
                 this.movies.upcoming = upcoming.results;
             }
+
+            this.loaded = true;
         },
         handleResize() {
             this.windowWidth = window.innerWidth;
@@ -156,6 +166,35 @@ export default {
 .icon {
     width: 1.4rem;
     margin-right: 0.3rem;
+}
+
+.spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 83vh;
+}
+
+.spinner {
+    width: 4rem;
+    height: 4rem;
+    border: 6px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes fadein {

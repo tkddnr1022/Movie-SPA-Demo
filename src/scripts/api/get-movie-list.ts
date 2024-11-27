@@ -10,6 +10,8 @@ const LANGUAGE = import.meta.env.VITE_LANGUAGE;
 const $toast = useToast();
 
 export async function getMovieList(query: string) {
+    // Test: 로딩 효과를 위해 sleep
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const cache = getCachedData(`movieList-${query}`);
     if (cache) {
         return cache.data as MovieResponse;
