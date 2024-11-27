@@ -1,6 +1,6 @@
 <template>
-  <Navbar v-if="!$route.meta.hideNavbar" />
   <div class="container">
+    <Navbar v-if="!$route.meta.hideNavbar" />
     <RouterView />
   </div>
   <Footer />
@@ -15,7 +15,13 @@ import Navbar from './components/Navbar.vue';
 <style scoped>
 .container{
   width: 100%;
-  padding: 0rem 10rem 0rem 10rem;
+  padding: 0rem 15rem 0rem 15rem;
+}
+
+@media (max-width: 1500px) {
+  .container {
+    padding: 0rem 7.5rem 0rem 7.5rem;
+  }
 }
 
 @media (max-width: 1200px) {
